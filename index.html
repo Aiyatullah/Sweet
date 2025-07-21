@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sweet Treats Bakery</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <style>
+    .font-pacifico {
+      font-family: 'Pacifico', cursive;
+    }
+
+    @keyframes fadeSlideUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-fadeSlideUp {
+      animation: fadeSlideUp 1s ease-out forwards;
+    }
+
+    .animation-delay-700 {
+      animation-delay: 0.7s;
+    }
+
+    .animation-delay-800 {
+      animation-delay: 0.8s;
+    }
+
+    .animation-delay-900 {
+      animation-delay: 0.9s;
+    }
+
+    /* Lightbox fade/scale animation */
+    #lightbox {
+      opacity: 0;
+      transform: scale(0.98);
+      transition: opacity 0.4s cubic-bezier(.4, 0, .2, 1), transform 0.4s cubic-bezier(.4, 0, .2, 1);
+      pointer-events: none;
+    }
+
+    #lightbox:not(.hidden) {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: auto;
+    }
+
+    #lightbox-image {
+      transition: box-shadow 0.4s, filter 0.4s;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
+      filter: drop-shadow(0 0 8px #fff8);
+    }
+
+    /* Sparkle effect */
+    .sparkle {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      pointer-events: none;
+      background: radial-gradient(circle, #fff 60%, #f9a8d4 100%, transparent 100%);
+      border-radius: 50%;
+      opacity: 0.85;
+      animation: sparkle-pop 0.7s cubic-bezier(.4, 0, .2, 1) forwards;
+    }
+
+    @keyframes sparkle-pop {
+      0% {
+        opacity: 0.7;
+        transform: scale(0.5) rotate(0deg);
+      }
+
+      60% {
+        opacity: 1;
+        transform: scale(1.2) rotate(20deg);
+      }
+
+      100% {
+        opacity: 0;
+        transform: scale(1.8) rotate(60deg);
+      }
+    }
+
+    /* Carousel progress bar */
+    #carousel-progress {
+      transition: width 3s linear;
+    }
+  </style>
+</head>
+
+<body class="bg-pink-50 text-gray-800 leading-relaxed overflow-x-hidden">
+  <!-- Hero Section -->
+  <section class="relative w-full h-screen bg-cover bg-center flex items-center justify-center"
+    style="background-image: url('https://images.unsplash.com/photo-1600891964599-f61ba0e24092?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80');">
+    <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+    <div class="relative z-10 text-center px-6">
+      <h1 class="text-white text-4xl sm:text-5xl md:text-6xl font-bold font-pacifico mb-4 opacity-0 animate-fadeSlideUp"
+        style="animation-delay: 0.6s;">
+        Welcome to Sweet Treats Bakery
+      </h1>
+      <p class="text-white text-lg sm:text-xl mb-6 opacity-0 animate-fadeSlideUp" style="animation-delay: 1s;">
+        Delicious moments baked fresh daily 🍰
+      </p>
+      <a href="#menu"
+        class="bg-white text-pink-600 font-semibold px-6 py-3 rounded-full shadow-lg hover:bg-pink-100 opacity-0 animate-fadeSlideUp"
+        style="animation-delay: 1.4s;">
+        Explore Our Menu
+      </a>
+    </div>
+  </section>
+
+  <!-- Image Carousel Section -->
+  <section class="py-12 px-4 text-center">
+    <h2 class="text-3xl font-bold mb-6">A Peek Inside Our Bakery</h2>
+
+    <div class="relative max-w-4xl mx-auto overflow-hidden rounded-xl">
+      <!-- Slides -->
+      <div id="carousel" class="flex transition-transform duration-700 ease-in-out">
+        <div class="w-full aspect-[3/2] flex-shrink-0">
+          <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=1026&auto=format&fit=crop"
+            class="w-full h-full object-cover rounded-xl" />
+        </div>
+        <div class="w-full aspect-[3/2] flex-shrink-0">
+          <img src="https://images.unsplash.com/photo-1583338917451-face2751d8d5?q=80&w=687&auto=format&fit=crop"
+            class="w-full h-full object-cover rounded-xl" />
+        </div>
+        <div class="w-full aspect-[3/2] flex-shrink-0">
+          <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?q=80&w=1974&auto=format&fit=crop"
+            class="w-full h-full object-cover rounded-xl" />
+        </div>
+      </div>
+      <!-- Progress Bar -->
+      <div id="carousel-progress" class="absolute bottom-0 left-0 h-1 bg-pink-300 rounded transition-all duration-0"
+        style="width:0%"></div>
+
+      <!-- Navigation Buttons -->
+      <button id="prev"
+        class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white text-gray-600 p-2 rounded-full shadow hover:bg-pink-100 transition">❮</button>
+      <button id="next"
+        class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white text-gray-600 p-2 rounded-full shadow hover:bg-pink-100 transition">❯</button>
+    </div>
+  </section>
+  <!-- Menu Section -->
+  <section id="menu" class="py-16 px-4 bg-white">
+    <div class="max-w-6xl mx-auto text-center">
+      <h2 class="text-4xl font-bold mb-4 font-pacifico text-pink-600">Our Menu</h2>
+      <p class="text-gray-600 mb-10">Freshly baked with love. Hover over items to see more details!</p>
+
+      <!-- Menu Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+
+        <!-- Item -->
+        <div class="relative group border rounded-xl overflow-hidden shadow hover:shadow-lg transition">
+          <img src="https://images.unsplash.com/photo-1645805740318-31bb7604ffd9?q=80&w=1170&auto=format&fit=crop"
+            class="w-full h-56 object-cover" alt="Chocolate Cake">
+          <div class="p-4">
+            <h3 class="text-xl font-semibold text-pink-600">Chocolate Fudge Cake</h3>
+            <p class="text-gray-500">$4.50</p>
+          </div>
+          <!-- Hover Description -->
+          <div
+            class="absolute inset-0 bg-white bg-opacity-95 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center p-4 text-center">
+            <p class="text-sm text-gray-700">A rich and moist chocolate cake topped with silky fudge frosting. A bakery
+              classic!</p>
+          </div>
+        </div>
+
+        <!-- Item -->
+        <div class="relative group border rounded-xl overflow-hidden shadow hover:shadow-lg transition">
+          <img src="https://images.unsplash.com/photo-1635341083259-7a2a471541c1?q=80&w=735&auto=format&fit=crop"
+            class="w-full h-56 object-cover" alt="Croissant">
+          <div class="p-4">
+            <h3 class="text-xl font-semibold text-pink-600">Butter Croissant</h3>
+            <p class="text-gray-500">$2.25</p>
+          </div>
+          <div
+            class="absolute inset-0 bg-white bg-opacity-95 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center p-4 text-center">
+            <p class="text-sm text-gray-700">Flaky, golden layers with a buttery aroma that melts in your mouth. Perfect
+              with coffee.</p>
+          </div>
+        </div>
+
+        <!-- Item -->
+        <div class="relative group border rounded-xl overflow-hidden shadow hover:shadow-lg transition">
+          <img src="https://images.unsplash.com/photo-1593872423141-bb230bd352c6?q=80&w=687&auto=format&fit=crop"
+            class="w-full h-56 object-cover" alt="Cinnamon Roll">
+          <div class="p-4">
+            <h3 class="text-xl font-semibold text-pink-600">Cinnamon Roll</h3>
+            <p class="text-gray-500">$3.75</p>
+          </div>
+          <div
+            class="absolute inset-0 bg-white bg-opacity-95 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center p-4 text-center">
+            <p class="text-sm text-gray-700">Swirled with cinnamon and brown sugar, topped with vanilla glaze. A warm
+              hug
+              in pastry form.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- Gallery Section -->
+  <section id="gallery" class="py-16 px-4 bg-white">
+    <div class="max-w-6xl mx-auto text-center">
+      <h2 class="text-4xl font-bold mb-4 font-pacifico text-pink-600">Bakery Gallery</h2>
+      <p class="text-gray-600 mb-10">Take a look at some of our most delightful treats and cozy space!</p>
+
+      <!-- A more dynamic and visually appealing grid -->
+      <div class="grid grid-cols-2 md:grid-cols-4 md:grid-rows-2 gap-4 md:gap-6" style="min-height: 600px;">
+        <!-- Main Image: Macarons -->
+        <div class="relative md:col-span-2 md:row-span-2 rounded-lg overflow-hidden shadow-lg group cursor-pointer">
+          <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=800&auto=format&fit=crop"
+            alt="Macarons Variety"
+            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+          <div class="absolute inset-0 pointer-events-none z-10" id="sparkle-container"></div>
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6">
+            <h3
+              class="text-white text-xl font-bold transform translate-y-5 group-hover:translate-y-0 transition-transform duration-500 ease-in-out">
+              Macarons Variety</h3>
+          </div>
+        </div>
+        <!-- Image 2: Cupcakes -->
+        <div class="relative rounded-lg overflow-hidden shadow-lg group cursor-pointer">
+          <img src="https://images.unsplash.com/photo-1505935428862-770b6f24f629?q=80&w=800&auto=format&fit=crop"
+            alt="Cupcakes with Frosting"
+            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+          <div class="absolute inset-0 pointer-events-none z-10" id="sparkle-container"></div>
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4">
+            <h3
+              class="text-white text-base font-semibold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 ease-in-out">
+              Cupcakes with Frosting</h3>
+          </div>
+        </div>
+        <!-- Image 3: Tart -->
+        <div class="relative rounded-lg overflow-hidden shadow-lg group cursor-pointer">
+          <img src="https://images.unsplash.com/photo-1593872423141-bb230bd352c6?q=80&w=687&auto=format&fit=crop"
+            alt="Chocolate Berry Tart"
+            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+          <div class="absolute inset-0 pointer-events-none z-10" id="sparkle-container"></div>
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4">
+            <h3
+              class="text-white text-base font-semibold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 ease-in-out">
+              Chocolate Berry Tart</h3>
+          </div>
+        </div>
+        <!-- Image 4: Counter -->
+        <div class="relative rounded-lg overflow-hidden shadow-lg group cursor-pointer">
+          <img src="https://images.unsplash.com/photo-1635341083259-7a2a471541c1?q=80&w=735&auto=format&fit=crop"
+            alt="Bakery Counter Display"
+            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+          <div class="absolute inset-0 pointer-events-none z-10" id="sparkle-container"></div>
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4">
+            <h3
+              class="text-white text-base font-semibold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 ease-in-out">
+              Bakery Counter Display</h3>
+          </div>
+        </div>
+        <!-- Image 5: Buns -->
+        <div class="relative rounded-lg overflow-hidden shadow-lg group cursor-pointer">
+          <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?q=80&w=1974&auto=format&fit=crop"
+            alt="Freshly Baked Buns"
+            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+          <div class="absolute inset-0 pointer-events-none z-10" id="sparkle-container"></div>
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4">
+            <h3
+              class="text-white text-base font-semibold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 ease-in-out">
+              Freshly Baked Buns</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center hidden">
+
+      <!-- Close Button -->
+      <button id="lightbox-close"
+        class="absolute top-4 right-4 text-white p-2 rounded-full hover:bg-white/20 transition-colors">
+        <span class="text-3xl">×</span>
+      </button>
+
+      <!-- Previous -->
+      <button id="lightbox-prev"
+        class="absolute left-4 top-1/2 -translate-y-1/2 text-white p-2 rounded-full hover:bg-white/20 transition-colors">
+        <span class="text-4xl">‹</span>
+      </button>
+
+      <!-- Next -->
+      <button id="lightbox-next"
+        class="absolute right-4 top-1/2 -translate-y-1/2 text-white p-2 rounded-full hover:bg-white/20 transition-colors">
+        <span class="text-4xl">›</span>
+      </button>
+
+      <!-- Image Container -->
+      <div class="max-w-4xl max-h-[80vh]" onclick="event.stopPropagation()">
+        <img id="lightbox-image" src="" alt="" class="max-h-[70vh] w-auto mx-auto rounded shadow-lg" />
+        <div class="text-center mt-4 text-white">
+          <p id="lightbox-caption" class="text-lg font-semibold"></p>
+          <p id="lightbox-counter" class="text-sm text-gray-300 mt-2"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- FAQ Section -->
+  <section id="faq" class="py-16 px-4 bg-white">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-4xl font-bold font-pacifico text-center text-pink-600 mb-8">Frequently Asked Questions</h2>
+
+      <div class="space-y-4">
+        <!-- FAQ Item 1 -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden">
+          <button
+            class="w-full text-left px-6 py-4 flex justify-between items-center bg-pink-100 font-semibold text-gray-700 toggle-faq">
+            What are your bakery hours?
+            <span class="transform transition-transform duration-300">+</span>
+          </button>
+          <div class="max-h-0 overflow-hidden transition-all duration-300 bg-white px-6 text-gray-600">
+            <p class="py-4">We’re open Monday through Saturday from 8:00 AM to 6:00 PM. Closed on Sundays.</p>
+          </div>
+        </div>
+
+        <!-- FAQ Item 2 -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden">
+          <button
+            class="w-full text-left px-6 py-4 flex justify-between items-center bg-pink-100 font-semibold text-gray-700 toggle-faq">
+            Do you offer custom cake orders?
+            <span class="transform transition-transform duration-300">+</span>
+          </button>
+          <div class="max-h-0 overflow-hidden transition-all duration-300 bg-white px-6 text-gray-600">
+            <p class="py-4">Yes! We create custom cakes for birthdays, weddings, and all occasions. Contact us to
+              discuss details.</p>
+          </div>
+        </div>
+
+        <!-- FAQ Item 3 -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden">
+          <button
+            class="w-full text-left px-6 py-4 flex justify-between items-center bg-pink-100 font-semibold text-gray-700 toggle-faq">
+            Are there gluten-free or vegan options?
+            <span class="transform transition-transform duration-300">+</span>
+          </button>
+          <div class="max-h-0 overflow-hidden transition-all duration-300 bg-white px-6 text-gray-600">
+            <p class="py-4">Absolutely! We have a selection of gluten-free and vegan treats. Just ask our staff for
+              recommendations.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact + Map Section -->
+  <section id="contact" class="py-16 bg-pink-100 px-4">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-10">
+        <h2 class="text-4xl font-bold font-pacifico text-pink-700">Get In Touch</h2>
+        <p class="text-gray-700">Have a question, a custom order, or just want to say hi? We’d love to hear from you!
+        </p>
+      </div>
+  
+      <!-- Grid: Form + Map -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <!-- Contact Form -->
+        <form id="contactForm" class="bg-white p-8 rounded-xl shadow-lg space-y-6">
+          <div>
+            <label for="name" class="block text-sm font-medium text-gray-700">Name *</label>
+            <input type="text" id="name" name="name" required
+              class="mt-1 block w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-pink-400" />
+          </div>
+  
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-700">Email *</label>
+            <input type="email" id="email" name="email" required
+              class="mt-1 block w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-pink-400" />
+          </div>
+  
+          <div>
+            <label for="message" class="block text-sm font-medium text-gray-700">Message *</label>
+            <textarea id="message" name="message" rows="5" required
+              class="mt-1 block w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-pink-400"></textarea>
+          </div>
+  
+          <button type="submit"
+            class="w-full bg-pink-600 text-white font-semibold py-3 rounded-md hover:bg-pink-700 transition">Send
+            Message</button>
+        </form>
+  
+        <!-- Map -->
+        <div class="rounded-xl overflow-hidden shadow-lg">
+          <iframe
+            src="https://maps.google.com/maps?width=600&height=400&hl=en&q=Enact%20on&t=&z=14&ie=UTF8&iwloc=B&output=embed"
+            width="100%" height="100%" style="border:0; min-height: 400px;" allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- JavaScript -->
+  <script src="script.js"></script>
+
+
+
+</body>
+
+</html>
