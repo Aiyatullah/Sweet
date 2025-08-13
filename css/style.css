@@ -1,0 +1,56 @@
+ .font-pacifico {
+      font-family: 'Pacifico', cursive;
+    }
+
+    @keyframes fadeSlideUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-fadeSlideUp {
+      animation: fadeSlideUp 1s ease-out forwards;
+    }
+
+    .animation-delay-700 {
+      animation-delay: 0.7s;
+    }
+
+    .animation-delay-800 {
+      animation-delay: 0.8s;
+    }
+
+    .animation-delay-900 {
+      animation-delay: 0.9s;
+    }
+
+    /* Lightbox fade/scale animation */
+    #lightbox {
+      opacity: 0;
+      transform: scale(0.98);
+      transition: opacity 0.4s cubic-bezier(.4, 0, .2, 1), transform 0.4s cubic-bezier(.4, 0, .2, 1);
+      pointer-events: none;
+    }
+
+    #lightbox:not(.hidden) {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: auto;
+    }
+
+    #lightbox-image {
+      transition: box-shadow 0.4s, filter 0.4s;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
+      filter: drop-shadow(0 0 8px #fff8);
+    }
+
+    /* Carousel progress bar */
+    #carousel-progress {
+      transition: width 3s linear;
+    }
