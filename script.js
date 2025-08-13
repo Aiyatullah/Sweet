@@ -1,5 +1,56 @@
-// ===== Carousel, Lightbox, and FAQ Logic (All DOM Ready) =====
+// ===== Carousel, Lightbox, FAQ, and Today's Special Logic (All DOM Ready) =====
 document.addEventListener("DOMContentLoaded", function () {
+  // ===== Today's Special Logic =====
+  const specialsData = [
+    {
+      image: "images/cakes.png",
+      title: "Decadent Chocolate Layer Cake",
+      description: "Rich, moist chocolate cake with velvety ganache frosting and fresh berries.",
+      price: "$24.99"
+    },
+    {
+      image: "images/crossiant.png",
+      title: "Artisan Butter Croissants",
+      description: "Flaky, buttery croissants made with premium French butter and patience.",
+      price: "$3.50"
+    },
+    {
+      image: "images/cupcakes.png",
+      title: "Gourmet Cupcake Collection",
+      description: "Assorted cupcakes with unique flavors and artistic buttercream designs.",
+      price: "$18.99"
+    },
+    {
+      image: "images/background.png",
+      title: "Baker's Choice Surprise",
+      description: "A delightful selection of our finest pastries, chosen by our head baker.",
+      price: "$15.99"
+    }
+  ];
+
+  function loadTodaysSpecial() {
+    // Use Math.random() to select a random special
+    const randomIndex = Math.floor(Math.random() * specialsData.length);
+    const todaysSpecial = specialsData[randomIndex];
+    
+    // Update the DOM elements
+    const specialImage = document.getElementById('special-image');
+    const specialTitle = document.getElementById('special-title');
+    const specialDescription = document.getElementById('special-description');
+    const specialPrice = document.getElementById('special-price');
+    
+    if (specialImage && specialTitle && specialDescription && specialPrice) {
+      specialImage.src = todaysSpecial.image;
+      specialImage.alt = todaysSpecial.title;
+      specialTitle.textContent = todaysSpecial.title;
+      specialDescription.textContent = todaysSpecial.description;
+      specialPrice.textContent = todaysSpecial.price;
+    }
+  }
+  
+  // Load today's special on page load
+  loadTodaysSpecial();
+
   // ===== Carousel Logic =====
   const carousel = document.getElementById("carousel");
   const prevBtn = document.getElementById("prev");
@@ -55,24 +106,6 @@ document.addEventListener("DOMContentLoaded", function () {
     updateCarousel();
     startCarouselAuto();
   }
-
-  // ===== Sparkle Effect on Gallery Hover =====
-  // document.querySelectorAll("#gallery .group").forEach((item) => {
-  //   item.addEventListener("mouseenter", (e) => {
-  //     const sparkleContainer = item.querySelector("#sparkle-container");
-  //     if (!sparkleContainer) return;
-  //     for (let i = 0; i < 8; i++) {
-  //       const sparkle = document.createElement("div");
-  //       sparkle.className = "sparkle";
-  //       const x = Math.random() * 90 + 5;
-  //       const y = Math.random() * 90 + 5;
-  //       sparkle.style.left = `${x}%`;
-  //       sparkle.style.top = `${y}%`;
-  //       sparkleContainer.appendChild(sparkle);
-  //       setTimeout(() => sparkle.remove(), 700);
-  //     }
-  //   });
-  // });
 
   // ===== LIGHTBOX LOGIC (with Animated Show/Hide) =====
   const galleryItems = document.querySelectorAll("#gallery .group");
@@ -211,14 +244,12 @@ document.addEventListener("DOMContentLoaded", function () {
       const content = button.nextElementSibling;
       const icon = button.querySelector("span");
       const isExpanded = content.style.maxHeight;
-      // First, close all other FAQ items for a clean accordion effect
       document.querySelectorAll(".toggle-faq").forEach((btn) => {
         if (btn !== button) {
           btn.nextElementSibling.style.maxHeight = null;
           btn.querySelector("span").textContent = "+";
         }
       });
-      // Then, toggle the state of the clicked item
       if (isExpanded) {
         content.style.maxHeight = null;
         icon.textContent = "+";
