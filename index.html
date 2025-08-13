@@ -7,100 +7,16 @@
   <title>Sweet Treats Bakery</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
-  <style>
-    .font-pacifico {
-      font-family: 'Pacifico', cursive;
-    }
-
-    @keyframes fadeSlideUp {
-      0% {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .animate-fadeSlideUp {
-      animation: fadeSlideUp 1s ease-out forwards;
-    }
-
-    .animation-delay-700 {
-      animation-delay: 0.7s;
-    }
-
-    .animation-delay-800 {
-      animation-delay: 0.8s;
-    }
-
-    .animation-delay-900 {
-      animation-delay: 0.9s;
-    }
-
-    /* Lightbox fade/scale animation */
-    #lightbox {
-      opacity: 0;
-      transform: scale(0.98);
-      transition: opacity 0.4s cubic-bezier(.4, 0, .2, 1), transform 0.4s cubic-bezier(.4, 0, .2, 1);
-      pointer-events: none;
-    }
-
-    #lightbox:not(.hidden) {
-      opacity: 1;
-      transform: scale(1);
-      pointer-events: auto;
-    }
-
-    #lightbox-image {
-      transition: box-shadow 0.4s, filter 0.4s;
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
-      filter: drop-shadow(0 0 8px #fff8);
-    }
-
-    /* Sparkle effect */
-    .sparkle {
-      position: absolute;
-      width: 12px;
-      height: 12px;
-      pointer-events: none;
-      background: radial-gradient(circle, #fff 60%, #f9a8d4 100%, transparent 100%);
-      border-radius: 50%;
-      opacity: 0.85;
-      animation: sparkle-pop 0.7s cubic-bezier(.4, 0, .2, 1) forwards;
-    }
-
-    @keyframes sparkle-pop {
-      0% {
-        opacity: 0.7;
-        transform: scale(0.5) rotate(0deg);
-      }
-
-      60% {
-        opacity: 1;
-        transform: scale(1.2) rotate(20deg);
-      }
-
-      100% {
-        opacity: 0;
-        transform: scale(1.8) rotate(60deg);
-      }
-    }
-
-    /* Carousel progress bar */
-    #carousel-progress {
-      transition: width 3s linear;
-    }
-  </style>
+  <link rel="stylesheet" href="./css/style.css" />
 </head>
 
 <body class="bg-pink-50 text-gray-800 leading-relaxed overflow-x-hidden">
   <!-- Hero Section -->
   <section class="relative w-full h-screen bg-cover bg-center flex items-center justify-center"
-    style="background-image: url('https://images.unsplash.com/photo-1600891964599-f61ba0e24092?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80');">
+    style="background-image: url('images/background.png');">
+
     <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+    
     <div class="relative z-10 text-center px-6">
       <h1 class="text-white text-4xl sm:text-5xl md:text-6xl font-bold font-pacifico mb-4 opacity-0 animate-fadeSlideUp"
         style="animation-delay: 0.6s;">
@@ -114,6 +30,36 @@
         style="animation-delay: 1.4s;">
         Explore Our Menu
       </a>
+    
+    </div>
+  </section>
+
+  <!-- Today's Special Section -->
+  <section class="py-16 px-4 bg-gradient-to-r from-pink-100 to-yellow-100">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-4xl font-bold mb-4 font-pacifico text-pink-700">Today's Special</h2>
+      <p class="text-gray-700 mb-8">Discover our featured treat of the day - freshly baked and specially selected!</p>
+      
+      <div class="bg-white rounded-2xl shadow-lg overflow-hidden max-w-md mx-auto transform hover:scale-105 transition-transform duration-300">
+        <div class="relative">
+          <img id="special-image" src="" alt="Today's Special" class="w-full h-64 object-cover">
+          <div class="absolute top-4 right-4 bg-pink-600 text-white px-3 py-1 rounded-full text-sm font-semibold animate-pulse">
+            Special!
+          </div>
+        </div>
+        <div class="p-6">
+          <h3 id="special-title" class="text-2xl font-bold text-pink-600 mb-2">Loading...</h3>
+          <p id="special-description" class="text-gray-600 mb-4">Preparing something delicious for you...</p>
+          <div class="flex items-center justify-between">
+            <span id="special-price" class="text-2xl font-bold text-green-600">$0.00</span>
+            <button class="bg-pink-600 text-white px-4 py-2 rounded-full hover:bg-pink-700 transition-colors duration-200">
+              Order Now
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <p class="text-sm text-gray-500 mt-4 italic">✨ Our special changes daily - refresh the page to see what's new!</p>
     </div>
   </section>
 
@@ -125,15 +71,15 @@
       <!-- Slides -->
       <div id="carousel" class="flex transition-transform duration-700 ease-in-out">
         <div class="w-full aspect-[3/2] flex-shrink-0">
-          <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=1026&auto=format&fit=crop"
+          <img src="images/crossiant.png"
             class="w-full h-full object-cover rounded-xl" />
         </div>
         <div class="w-full aspect-[3/2] flex-shrink-0">
-          <img src="https://images.unsplash.com/photo-1583338917451-face2751d8d5?q=80&w=687&auto=format&fit=crop"
+          <img src="images/cakes.png"
             class="w-full h-full object-cover rounded-xl" />
         </div>
         <div class="w-full aspect-[3/2] flex-shrink-0">
-          <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?q=80&w=1974&auto=format&fit=crop"
+          <img src="images/cupcakes.png"
             class="w-full h-full object-cover rounded-xl" />
         </div>
       </div>
@@ -216,7 +162,6 @@
       <h2 class="text-4xl font-bold mb-4 font-pacifico text-pink-600">Bakery Gallery</h2>
       <p class="text-gray-600 mb-10">Take a look at some of our most delightful treats and cozy space!</p>
 
-      <!-- A more dynamic and visually appealing grid -->
       <div class="grid grid-cols-2 md:grid-cols-4 md:grid-rows-2 gap-4 md:gap-6" style="min-height: 600px;">
         <!-- Main Image: Macarons -->
         <div class="relative md:col-span-2 md:row-span-2 rounded-lg overflow-hidden shadow-lg group cursor-pointer">
@@ -374,7 +319,7 @@
         <p class="text-gray-700">Have a question, a custom order, or just want to say hi? We’d love to hear from you!
         </p>
       </div>
-  
+
       <!-- Grid: Form + Map -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
         <!-- Contact Form -->
@@ -384,24 +329,24 @@
             <input type="text" id="name" name="name" required
               class="mt-1 block w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-pink-400" />
           </div>
-  
+
           <div>
             <label for="email" class="block text-sm font-medium text-gray-700">Email *</label>
             <input type="email" id="email" name="email" required
               class="mt-1 block w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-pink-400" />
           </div>
-  
+
           <div>
             <label for="message" class="block text-sm font-medium text-gray-700">Message *</label>
             <textarea id="message" name="message" rows="5" required
               class="mt-1 block w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-pink-400"></textarea>
           </div>
-  
+
           <button type="submit"
             class="w-full bg-pink-600 text-white font-semibold py-3 rounded-md hover:bg-pink-700 transition">Send
             Message</button>
         </form>
-  
+
         <!-- Map -->
         <div class="rounded-xl overflow-hidden shadow-lg">
           <iframe
